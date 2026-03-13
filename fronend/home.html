@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>หน้าแรก - ระบบพนักงาน</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding-top: 50px; }
+        .welcome-box { border: 2px solid #ddd; padding: 20px; display: inline-block; border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="welcome-box">
+        <h1 id="greeting">กำลังโหลด...</h1>
+        <button onclick="logout()">ออกจากระบบ</button>
+    </div>
+
+    <script>
+        // 1. ไปหยิบชื่อที่เรา "จดไว้ในกระเป๋า" (localStorage) ออกมา
+        const savedName = localStorage.getItem('employeeName');
+
+        // 2. ถ้ามีชื่อจดไว้ ให้เปลี่ยนข้อความบนหน้าจอ
+        if (savedName) {
+            document.getElementById('greeting').innerText = "สวัสดีคุณ " + savedName;
+        } else {
+            // ถ้าแอบเข้าหน้านี้โดยไม่ได้ Login ให้ไล่กลับไปหน้าเดิม
+            alert("กรุณาเข้าสู่ระบบก่อน!");
+            window.location.href = 'login.html';
+        }
+
+        // ฟังก์ชันกดออกจากระบบ
+        function logout() {
+            localStorage.clear(); // ลบชื่อที่จดไว้ออก
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>

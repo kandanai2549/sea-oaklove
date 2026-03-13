@@ -13,22 +13,23 @@
 
     <form id="employeeForm">
         <div class="input-group">
-            <label for="employeeId">รหัสพนักงาน (ID)</label>
-            <input type="text" id="employeeId" name="employeeId" placeholder="เช่น 672165" required>
+            <label for="emp-id">รหัสพนักงาน (ID)</label>
+            <input type="text" id="emp-id" name="emp-id" placeholder="เช่น 672165" required>
         </div>
 
         <div class="input-group">
-            <label for="firstName">password</label>
-            <input type="text" id="firstName" name="firstName" placeholder="password" required>
+            <label for="password">password</label>
+            <input type="text" id="password" name="password" placeholder="password" required>
         </div>
 
-        <button type="submit" class="btn-submit">บันทึกข้อมูล</button>
+        <button type="button" class="btn-submit" onclick="loginUser()">บันทึกข้อมูล</button>
     </form>
 
     <div style="text-align: center; margin-top: 1rem;">
         <a href="wedtest.html" style="color: #666; text-decoration: none; font-size: 0.8rem;">← ย้อนกลับหน้าแรก</a>
     </div>
 </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.13.2/dist/axios.min.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
