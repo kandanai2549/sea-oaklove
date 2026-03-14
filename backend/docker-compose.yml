@@ -1,10 +1,7 @@
-version: '3.8'
-
 services:
   db:
-    image: mysql:8.0 # ปรับเป็น MySQL 8.0 เพื่อความทันสมัย (หรือใช้ 5.7 ตามเดิมได้หากต้องการ)
-    container_name: mysql_db_821
-    # MySQL 8.0 ใช้ plugin ตัวใหม่ จึงต้องใช้คำสั่งนี้เพื่อให้เข้ากับ Client รุ่นเก่าได้ดีขึ้น
+    image: mysql:8.0 
+    container_name: mysql_db_projakk 
     command: --default-authentication-plugin=mysql_native_password
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -12,32 +9,31 @@ services:
     ports:
       - "4312:3306"
     volumes:
-      - mysql_data_821:/var/lib/mysql
+      - db_data_projakk:/var/lib/mysql # 👈 ตั้งชื่อตู้เย็นใบใหม่
     networks:
-      - weblab821
+      - projakk_net
     restart: always
 
   phpmyadmin:
     image: phpmyadmin:latest
-    container_name: phpmyadmin_821
+    container_name: phpmyadmin_projakk 
     environment:
-      PMA_HOST: db # ใช้ชื่อ Service "db" แทนชื่อ Container เพื่อความยืดหยุ่นในระบบ Network
+      PMA_HOST: db 
       PMA_PORT: 3306 
       PMA_USER: root
       PMA_PASSWORD: root
-      UPLOAD_LIMIT: 64M # เพิ่มลิมิตการอัปโหลดไฟล์ SQL
+      UPLOAD_LIMIT: 64M 
     ports:
-      - "8822:80"
+      - "8833:80" 
     depends_on:
       - db
     networks:
-      - weblab821
+      - projakk_net 
     restart: always
 
 networks:
-  weblab821:
+  projakk_net: 
     driver: bridge
 
 volumes:
-  mysql_data_821:
-    driver: local
+  db_data_projakk: # 👈 ประกาศสร้างตู้เย็นใบใหม่ (ชื่อตรงกับข้างบนเป๊ะๆ)
