@@ -2,36 +2,136 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <title>หน้าแรก - ระบบพนักงาน</title>
-    <style>
-        body { font-family: sans-serif; text-align: center; padding-top: 50px; }
-        .welcome-box { border: 2px solid #ddd; padding: 20px; display: inline-block; border-radius: 10px; }
-    </style>
+    <title>ระบบพนักงาน - Dashboard</title>
+    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <div class="welcome-box">
-        <h1 id="greeting">กำลังโหลด...</h1>
-        <button onclick="logout()">ออกจากระบบ</button>
+    <div class="dashboard-layout">
+        
+        <aside class="sidebar">
+            <div class="sidebar-profile">
+                <i class="fas fa-user-circle profile-icon"></i>
+                <div class="profile-info">
+                    <span id="sidebar-name" class="name">กำลังโหลด...</span>
+                    <span class="status">พนักงานปัจจุบัน</span>
+                </div>
+            </div>
+            
+            <ul class="sidebar-menu" id="menu-list">
+                <li><a href="#" class="active" onclick="switchPage(event, 'page-news', this)"><i class="fas fa-bullhorn"></i> ข่าวสาร ประกาศ</a></li>
+                <li><a href="#" onclick="switchPage(event, 'page-profile', this)"><i class="fas fa-user"></i> ข้อมูลส่วนตัว</a></li>
+                <li><a href="#" onclick="switchPage(event, 'page-schedule', this)"><i class="fas fa-table"></i> ตารางการทำงาน</a></li>
+                <li><a href="#" onclick="switchPage(event, 'page-settings', this)"><i class="fas fa-cog"></i> ตั้งค่าระบบ</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            
+            <header class="topbar">
+                <div class="topbar-title">ระบบจัดการพนักงาน</div>
+                <div class="topbar-user">
+                    <span id="topbar-name">กำลังโหลด...</span>
+                    <button class="btn-logout-icon" onclick="logout()" title="ออกจากระบบ">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </header>
+
+            <div class="content-area">
+                
+                <div id="welcomeBox" class="welcome-alert">
+                    <span id="welcome-msg">กำลังโหลด...</span>
+                    <button class="close-btn" onclick="closeAlert()">&times;</button>
+                </div>
+
+                <div id="page-news" class="page-section">
+                    <h2 class="section-title">ประกาศล่าสุด</h2>
+                    <div class="card">
+                        <h3>อัปเดตระบบลาพักร้อน ประจำปี 2569</h3>
+                        <span class="badge">ประกาศจาก HR</span>
+                        <p>ขอให้พนักงานทุกคนเข้าไปตรวจสอบสิทธิวันลาพักร้อนคงเหลือในระบบ ภายในวันที่ 30 มีนาคมนี้</p>
+                    </div>
+                </div>
+
+                <div id="page-profile" class="page-section" style="display: none;">
+                    <h2 class="section-title">ข้อมูลส่วนตัวของฉัน</h2>
+                    <div class="card">
+                        <h3><i class="fas fa-id-card"></i> ข้อมูลพื้นฐาน</h3>
+                        <p>รหัสพนักงาน: <span id="profile-emp-id">กำลังโหลด...</span></p>
+                        <p>แผนก: ไอที (IT)</p>
+                        <p>ตำแหน่ง: Software Engineer</p>
+                    </div>
+                </div>
+
+                <div id="page-schedule" class="page-section" style="display: none;">
+                    <h2 class="section-title">ตารางการทำงาน (สัปดาห์นี้)</h2>
+                    <div class="card">
+                        <p>📅 วันจันทร์ - ศุกร์ : เข้างาน 09:00 - 18:00 น.</p>
+                        <p>🛋️ วันเสาร์ - อาทิตย์ : วันหยุดพักผ่อน</p>
+                    </div>
+                </div>
+
+                <div id="page-settings" class="page-section" style="display: none;">
+                    <h2 class="section-title">ตั้งค่าระบบ</h2>
+                    <div class="card">
+                        <h3>เปลี่ยนรหัสผ่าน</h3>
+                        <p>คุณสามารถเปลี่ยนรหัสผ่านใหม่ได้ที่นี่ (รอการพัฒนาต่อ)</p>
+                        <button style="padding: 10px; cursor:pointer;">แก้ไขรหัสผ่าน</button>
+                    </div>
+                </div>
+
+            </div>
+        </main>
     </div>
 
     <script>
-        // 1. ไปหยิบชื่อที่เรา "จดไว้ในกระเป๋า" (localStorage) ออกมา
-        const savedName = localStorage.getItem('employeeName');
-
-        // 2. ถ้ามีชื่อจดไว้ ให้เปลี่ยนข้อความบนหน้าจอ
-        if (savedName) {
-            document.getElementById('greeting').innerText = "สวัสดีคุณ " + savedName;
+        // 1. ดึงข้อมูลพนักงานตอนโหลดหน้า
+        const name = localStorage.getItem('employeeName');
+        
+        if (name) {
+            document.getElementById('welcome-msg').innerText = "ยินดีต้อนรับเข้าสู่ระบบ คุณ " + name;
+            document.getElementById('sidebar-name').innerText = "คุณ " + name;
+            document.getElementById('topbar-name').innerText = name;
+            // แถม: โชว์ชื่อในหน้าโปรไฟล์ด้วย
+            document.getElementById('profile-emp-id').innerText = name; 
         } else {
-            // ถ้าแอบเข้าหน้านี้โดยไม่ได้ Login ให้ไล่กลับไปหน้าเดิม
-            alert("กรุณาเข้าสู่ระบบก่อน!");
             window.location.href = 'login.html';
         }
 
-        // ฟังก์ชันกดออกจากระบบ
+        function closeAlert() {
+            const box = document.getElementById('welcomeBox');
+            box.style.opacity = '0'; 
+            setTimeout(() => { box.style.display = 'none'; }, 300); 
+        }
+
         function logout() {
-            localStorage.clear(); // ลบชื่อที่จดไว้ออก
+            localStorage.clear(); 
             window.location.href = 'login.html';
+        }
+
+        // 2. ฟังก์ชันสลับหน้า (พระเอกของเรา)
+        function switchPage(event, pageId, clickedLink) {
+            event.preventDefault(); // ป้องกันไม่ให้เว็บ Refresh เมื่อกดลิงก์
+
+            // 2.1 ซ่อนเนื้อหาทุกหน้า
+            const allPages = document.querySelectorAll('.page-section');
+            allPages.forEach(page => {
+                page.style.display = 'none';
+            });
+
+            // 2.2 โชว์เฉพาะหน้าที่เลือก
+            document.getElementById(pageId).style.display = 'block';
+
+            // 2.3 ลบแถบสีเขียว (active) ออกจากเมนูทั้งหมด
+            const allLinks = document.querySelectorAll('.sidebar-menu a');
+            allLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+
+            // 2.4 ใส่แถบสีเขียวให้เมนูที่เพิ่งกด
+            clickedLink.classList.add('active');
         }
     </script>
 </body>
